@@ -1,1 +1,2 @@
 # Fullstack20_palautukset
+Kurssin harjoituksien palautukset
