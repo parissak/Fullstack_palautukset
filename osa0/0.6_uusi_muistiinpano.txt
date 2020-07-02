@@ -1,0 +1,17 @@
+note over selain:
+js:ssa tunnistetaan lähetys 
+end note
+
+note over selain:
+tämän jälkeen js:ssa lisätään uusi tieto listalle 
+ja renderöidään lista
+end note
+
+note over selain:
+sitten js:ssa lähetetään tieto palvelimelle kutsumalla 
+palvelimelle lähettävää funktiota
+end note
+
+selain->palvelin: HTTP POST https://fullstack-exampleapp.herokuapp.com/new_note_spa
+palvelin->selain: HTTP 201 Created
+ 
