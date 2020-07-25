@@ -1,9 +1,9 @@
 import React from 'react'
 
-const FilterForm = ({ newFilter, handleFilterInput }) => {
+const FilterForm = ({ value, change }) => {
     return (
         <div>filter shown with
-            <input value={newFilter} onChange={handleFilterInput} />
+            <input value={value} onChange={change} />
         </div>
     )
 }

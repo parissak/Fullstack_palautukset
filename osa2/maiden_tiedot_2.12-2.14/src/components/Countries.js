@@ -2,6 +2,18 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const Country = ({ country }) => {
+    const [countryWeather, setCountryWeather] = useState([])
+    const capital = country.capital
+    const api_key = process.env.REACT_APP_API_KEY
+
+    useEffect(() => {
+        axios
+            .get(`http://api.openweathermap.org/data/2.5/weather?q=${capital}&appid=${api_key}&units=metric`)
+            .then(response => {
+                setCountryWeather(response.data)
+            })
+    }, [capital, api_key])
+
     return (
         <div>
             <div>
@@ -18,36 +30,24 @@ const Country = ({ country }) => {
             <br></br>
 
             <div>
-                <img src={country.flag} alt="flag" height="160"></img>
+                <img src={country.flag} alt="flag" height="80px"></img>
             </div>
 
             <div>
-                < Weather country={country} />
+                <Weather capital={capital} weather={countryWeather} />
             </div>
         </div>
     )
 }
 
-const Weather = ({ country }) => {
-    const [countryWeather, setCountryWeather] = useState([])
-    const capital = country.capital
-    const api_key = process.env.REACT_APP_API_KEY
-
-    useEffect(() => {
-        axios
-            .get(`http://api.openweathermap.org/data/2.5/weather?q=${capital}&appid=${api_key}&units=metric`)
-            .then(response => {
-                setCountryWeather(response.data)
-            })
-    }, [capital])
-
-    if (countryWeather.length !== 0) {
+const Weather = ({ capital, weather }) => {
+    if (weather.length !== 0) {
         return (
             <div>
                 <h3>Weather in {capital}</h3>
-                <p>temperature: {countryWeather.main.temp}</p>
-                <p>weather: {countryWeather.weather[0].main}</p>
-                <p>wind: {countryWeather.wind.speed}</p>
+                <p>temperature: {weather.main.temp}</p>
+                <p>weather: {weather.weather[0].main}</p>
+                <p>wind: {weather.wind.speed}</p>
             </div>
         )
     } else
@@ -58,7 +58,7 @@ const Weather = ({ country }) => {
         )
 }
 
-const Countries = ({ list, chooseCountry }) => {
+const Countries = ({ list, chooseOne }) => {
     if (list.length === 0) {
         return (
             <div>zero matches, specify another filter</div>
@@ -82,7 +82,7 @@ const Countries = ({ list, chooseCountry }) => {
                 {list.map(country =>
                     <li key={country.alpha2Code}>
                         {country.name}
-                        <button onClick={() => chooseCountry(country)}>show</button>
+                        <button onClick={() => chooseOne(country.name)}>show</button>
                     </li>)
                 }
             </ul >)

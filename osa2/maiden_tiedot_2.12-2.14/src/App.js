@@ -5,9 +5,7 @@ import Countries from './components/Countries';
 
 const App = () => {
   const [countries, setCountries] = useState([])
-  const [input, setInput] = useState('')
-  const [filtered, setFiltered] = useState([])
-   
+  const [filter, setFilter] = useState('')
 
   useEffect(() => {
     axios
@@ -16,26 +14,27 @@ const App = () => {
         setCountries(response.data)
       })
   }, [])
- 
- 
-  const handleFilter = (event) => {
-    setInput(event.target.value)
 
-    const filteredCountries = countries.filter(country =>
-      country.name.toLowerCase().includes(event.target.value.toLowerCase()))
-    setFiltered(filteredCountries)
-  }
-
-  const chooseOneCountry = (country) => {
-    setFiltered([country])
-  }
+  const filteredCountries = filter.length === 1 ?
+    countries :
+    countries.filter(c => c.name.toLowerCase().indexOf(filter.toLowerCase()) > -1)
 
   return (
     <div>
-      <div>find countries
-        <input value={input} onChange={handleFilter} />
-      </div>
-      <Countries list={filtered} chooseCountry={chooseOneCountry} />
+      <Search value={filter} setValue={setFilter} />
+      <Countries list={filteredCountries} chooseOne={setFilter} />
+    </div>
+  )
+}
+
+const Search = ({ value, setValue }) => {
+  const handleChange = (event) => {
+    setValue(event.target.value)
+  }
+
+  return (
+    <div>find countries
+      <input value={value} onChange={handleChange} />
     </div>
   )
 }
