@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "test": "jest --verbose",
+    "start": "NODE_ENV=production node index.js",
+    "test": "NODE_ENV=test jest --verbose --runInBand",
     "dev": "nodemon index.js"
   },
   "author": "",
@@ -18,7 +18,10 @@
   },
   "devDependencies": {
     "jest": "^26.4.0",
-    "nodemon": "^2.0.4"
+    "nodemon": "^2.0.4",
+    "supertest": "^4.0.2"
   },
-  "jest":{ "testEnvironment":"node" }
+  "jest": {
+    "testEnvironment": "node"
+  }
 }

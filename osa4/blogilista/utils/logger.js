@@ -1,5 +1,7 @@
 const info = (...params) => {
-    console.log(...params)
+    if (process.env.NODE_env !== 'test') {
+        console.log(...params)
+    }
 }
 
 module.exports = info
