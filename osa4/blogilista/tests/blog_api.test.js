@@ -31,7 +31,7 @@ beforeEach(async () => {
 
 test('amount of returned blogs is correct', async () => {
     const response = await api.get('/api/blogs')
-    expect(response.body).toHaveLength(2)
+    expect(response.body).toHaveLength(initialBlogs.length)
 })
 
 test('id of blog object is in correct form', async () => {
@@ -86,6 +86,43 @@ test('new blog without title and url returns 400', async () => {
         .post('/api/blogs')
         .send(newBlog)
         .expect(400)
+})
+
+test('blog can be deleted', async () => {
+    const deleteMe = {
+        title: 'deleteBlog',
+        author: 'deleteAuthor',
+        url: 'newUrl',
+    }
+
+    const res = await api
+        .post('/api/blogs')
+        .send(deleteMe)
+        .expect(201)
+        .expect('Content-Type', /application\/json/)
+
+    const idToDelete = res.body.id
+    await api
+        .delete(`/api/blogs/${idToDelete}`)
+        .expect(204)
+
+    const response = await api.get('/api/blogs')
+    expect(response.body).toHaveLength(initialBlogs.length)
+})
+
+test('blogs likes can be updated', async () => {
+    const response = await api.get('/api/blogs')
+    const firstBlog = response.body[0]
+    const likes = 666
+    firstBlog.likes = likes
+
+    await api
+        .post(`/api/blogs/${firstBlog.id}`)
+        .send(firstBlog)
+
+    const blogs = await api.get('/api/blogs')
+    const firsBlog = blogs.body[0]
+    expect(firstBlog.likes).toBe(666)
 })
 
 afterAll(() => {

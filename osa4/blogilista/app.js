@@ -6,6 +6,7 @@ const cors = require('cors')
 const blogRouter = require('./controllers/blogs')
 const middleware = require('./utils/middleware')
 const mongoose = require('mongoose')
+mongoose.set('useFindAndModify', false)
 
 logger('connecting to', config.mongoUrl)
 
