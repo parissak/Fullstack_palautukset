@@ -2,7 +2,7 @@ PUT http://localhost:3003/api/blogs/5f33a5221e2d39191e002e9c
 Content-Type: application/json
 
 { 
-  "title": "HELP",
+  "title": "put",
   "author":"test",
   "url": "test",
   "likes": 666 

@@ -4,4 +4,10 @@ const info = (...params) => {
     }
 }
 
-module.exports = info
+const error = (...params) => {
+    console.error('ERROR MESSAGE:', ...params)
+}
+
+module.exports = {
+    info, error
+}

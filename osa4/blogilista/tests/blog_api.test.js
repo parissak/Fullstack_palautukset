@@ -1,9 +1,9 @@
+const bcrypt = require('bcrypt')
 const mongoose = require('mongoose')
 const supertest = require('supertest')
 const app = require('../app')
 const Blog = require('../models/blog')
-const { init } = require('../models/blog')
-
+const User = require('../models/user')
 const api = supertest(app)
 
 const initialBlogs = [
@@ -27,6 +27,11 @@ beforeEach(async () => {
     await blogObject.save()
     blogObject = new Blog(initialBlogs[1])
     await blogObject.save()
+
+    await User.deleteMany({})
+    const passwordHash = await bcrypt.hash('sekret', 10)
+    const user = new User({ username: 'test', passwordHash })
+    await user.save()
 })
 
 test('amount of returned blogs is correct', async () => {
@@ -41,14 +46,18 @@ test('id of blog object is in correct form', async () => {
 })
 
 test('new blog can be added', async () => {
+    const logger = { username: 'test', password: 'sekret' }
+    const loginRes = await api.post('/api/login').send(logger)
+    const token = loginRes.body.token
+
     const newBlog = {
         title: 'newBlog',
         author: 'newAuthor',
         url: 'newUrl',
     }
-
     await api
         .post('/api/blogs')
+        .set('Authorization', `bearer ${token}`)
         .send(newBlog)
         .expect(201)
         .expect('Content-Type', /application\/json/)
@@ -59,7 +68,25 @@ test('new blog can be added', async () => {
     expect(titles).toContain(newBlog.title)
 })
 
+test('return 401 when trying to add new blog without token', async () => {
+    const newBlog = {
+        title: 'newBlog',
+        author: 'newAuthor',
+        url: 'newUrl',
+    }
+
+    await api
+        .post('/api/blogs')
+        .send(newBlog)
+        .expect(401)
+})
+
+
 test('new blog without likes has zero likes', async () => {
+    const logger = { username: 'test', password: 'sekret' }
+    const loginRes = await api.post('/api/login').send(logger)
+    const token = loginRes.body.token
+
     const newBlog = {
         title: 'noLikes',
         author: 'noLikesAuthor',
@@ -68,6 +95,7 @@ test('new blog without likes has zero likes', async () => {
 
     await api
         .post('/api/blogs')
+        .set('Authorization', `bearer ${token}`)
         .send(newBlog)
         .expect(201)
         .expect('Content-Type', /application\/json/)
@@ -78,17 +106,26 @@ test('new blog without likes has zero likes', async () => {
 })
 
 test('new blog without title and url returns 400', async () => {
+    const logger = { username: 'test', password: 'sekret' }
+    const loginRes = await api.post('/api/login').send(logger)
+    const token = loginRes.body.token
+
     const newBlog = {
         author: 'noTitleUrl',
     }
 
     await api
         .post('/api/blogs')
+        .set('Authorization', `bearer ${token}`)
         .send(newBlog)
         .expect(400)
 })
 
 test('blog can be deleted', async () => {
+    const logger = { username: 'test', password: 'sekret' }
+    const loginRes = await api.post('/api/login').send(logger)
+    const token = loginRes.body.token
+
     const deleteMe = {
         title: 'deleteBlog',
         author: 'deleteAuthor',
@@ -97,6 +134,7 @@ test('blog can be deleted', async () => {
 
     const res = await api
         .post('/api/blogs')
+        .set('Authorization', `bearer ${token}`)
         .send(deleteMe)
         .expect(201)
         .expect('Content-Type', /application\/json/)
@@ -104,6 +142,7 @@ test('blog can be deleted', async () => {
     const idToDelete = res.body.id
     await api
         .delete(`/api/blogs/${idToDelete}`)
+        .set('Authorization', `bearer ${token}`)
         .expect(204)
 
     const response = await api.get('/api/blogs')
