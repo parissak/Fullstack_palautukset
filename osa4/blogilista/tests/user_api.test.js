@@ -15,49 +15,58 @@ test('new user without username returns 400', async () => {
         password: 'noUsername',
     }
 
-    await api
+    const res = await api
         .post('/api/users')
         .send(newUser)
         .expect(400)
+
+    expect(res.body.error).toContain('`username` is required')
 })
 
-test('new user without long enough username returns 400', async () => {
-    const newUser = {
-        username: 'su',
-        name: 'shortUsername',
-        password: 'shortUsername',
-    }
-
-    await api
-        .post('/api/users')
-        .send(newUser)
-        .expect(400)
-})
-
-test('new user without password returns 400', async () => {
+test('new user without password returns 400 and error message', async () => {
     const newUser = {
         username: 'noPass',
         name: 'noPass',
         password: '',
     }
 
-    await api
+    const res = await api
         .post('/api/users')
         .send(newUser)
         .expect(400)
+
+    expect(res.body.error).toContain('password too short')
 })
 
-test('new user without long enough password returns 400', async () => {
+test('new user without long enough username returns 400 and error message', async () => {
+    const newUser = {
+        username: 'su',
+        name: 'shortUsername',
+        password: 'shortUsername',
+    }
+
+    const res = await api
+        .post('/api/users')
+        .send(newUser)
+        .expect(400)
+
+    expect(res.body.error).toContain('is shorter than the minimum allowed length')
+})
+
+test('new user without long enough password returns 400 and error message', async () => {
     const newUser = {
         username: 'shortPW',
         name: 'shortPW',
         password: 'PW',
     }
 
-    await api
+    const res = await api
         .post('/api/users')
         .send(newUser)
         .expect(400)
+
+    expect(res.body.error).toContain('password too short')
+
 })
 
 afterAll(() => {

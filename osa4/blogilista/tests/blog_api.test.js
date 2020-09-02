@@ -45,82 +45,6 @@ test('id of blog object is in correct form', async () => {
     expect(objectId).toBeDefined()
 })
 
-test('new blog can be added', async () => {
-    const logger = { username: 'test', password: 'sekret' }
-    const loginRes = await api.post('/api/login').send(logger)
-    const token = loginRes.body.token
-
-    const newBlog = {
-        title: 'newBlog',
-        author: 'newAuthor',
-        url: 'newUrl',
-    }
-    await api
-        .post('/api/blogs')
-        .set('Authorization', `bearer ${token}`)
-        .send(newBlog)
-        .expect(201)
-        .expect('Content-Type', /application\/json/)
-
-    const response = await api.get('/api/blogs')
-    const titles = response.body.map(blog => blog.title)
-    expect(response.body).toHaveLength(initialBlogs.length + 1)
-    expect(titles).toContain(newBlog.title)
-})
-
-test('return 401 when trying to add new blog without token', async () => {
-    const newBlog = {
-        title: 'newBlog',
-        author: 'newAuthor',
-        url: 'newUrl',
-    }
-
-    await api
-        .post('/api/blogs')
-        .send(newBlog)
-        .expect(401)
-})
-
-
-test('new blog without likes has zero likes', async () => {
-    const logger = { username: 'test', password: 'sekret' }
-    const loginRes = await api.post('/api/login').send(logger)
-    const token = loginRes.body.token
-
-    const newBlog = {
-        title: 'noLikes',
-        author: 'noLikesAuthor',
-        url: 'likesUrl',
-    }
-
-    await api
-        .post('/api/blogs')
-        .set('Authorization', `bearer ${token}`)
-        .send(newBlog)
-        .expect(201)
-        .expect('Content-Type', /application\/json/)
-
-    const response = await api.get('/api/blogs')
-    const blog = response.body[initialBlogs.length]
-    expect(blog.likes).toBe(0)
-})
-
-test('new blog without title and url returns 400', async () => {
-    const logger = { username: 'test', password: 'sekret' }
-    const loginRes = await api.post('/api/login').send(logger)
-    const token = loginRes.body.token
-
-    const newBlog = {
-        author: 'noTitleUrl',
-    }
-
-    await api
-        .post('/api/blogs')
-        .set('Authorization', `bearer ${token}`)
-        .send(newBlog)
-        .expect(400)
-})
-
 test('blog can be deleted', async () => {
     const logger = { username: 'test', password: 'sekret' }
     const loginRes = await api.post('/api/login').send(logger)
@@ -162,6 +86,85 @@ test('blogs likes can be updated', async () => {
     const blogs = await api.get('/api/blogs')
     const firsBlog = blogs.body[0]
     expect(firstBlog.likes).toBe(666)
+})
+
+describe('when a new blog is posted', () => {
+    let headers
+
+    beforeEach(async () => {
+        const logger = { username: 'test', password: 'sekret' }
+        const loginRes = await api.post('/api/login').send(logger)
+        const token = loginRes.body.token
+
+        headers = {'Authorization': `bearer ${token}`} 
+    })
+
+    test('it is saved to the database', async () => {
+        const newBlog = {
+            title: 'newBlog',
+            author: 'newAuthor',
+            url: 'newUrl',
+        }
+        await api
+            .post('/api/blogs')
+            .set(headers)
+            .send(newBlog)
+            .expect(201)
+            .expect('Content-Type', /application\/json/)
+
+        const response = await api.get('/api/blogs')
+        const titles = response.body.map(blog => blog.title)
+        expect(response.body).toHaveLength(initialBlogs.length + 1)
+        expect(titles).toContain(newBlog.title)
+    })
+
+    test('it gets zero likes if it does not have likes', async () => {
+        const newBlog = {
+            title: 'noLikes',
+            author: 'noLikesAuthor',
+            url: 'likesUrl',
+        }
+    
+        await api
+            .post('/api/blogs')
+            .set(headers)
+            .send(newBlog)
+            .expect(201)
+            .expect('Content-Type', /application\/json/)
+    
+        const response = await api.get('/api/blogs')
+        const blog = response.body[initialBlogs.length]
+        expect(blog.likes).toBe(0)
+    })
+
+    test('400 is returned if it does not have title and url', async () => {
+        const logger = { username: 'test', password: 'sekret' }
+        const loginRes = await api.post('/api/login').send(logger)
+        const token = loginRes.body.token
+    
+        const newBlog = {
+            author: 'noTitleUrl',
+        }
+    
+        await api
+            .post('/api/blogs')
+            .set(headers)
+            .send(newBlog)
+            .expect(400)
+    })
+
+    test('401 is returned if token is missing from request', async () => {
+        const newBlog = {
+            title: 'newBlog',
+            author: 'newAuthor',
+            url: 'newUrl',
+        }
+    
+        await api
+            .post('/api/blogs')
+            .send(newBlog)
+            .expect(401)
+    })
 })
 
 afterAll(() => {

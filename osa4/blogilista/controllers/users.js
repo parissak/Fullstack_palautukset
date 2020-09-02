@@ -2,15 +2,12 @@ const bcrypt = require('bcrypt')
 const User = require('../models/user')
 const userRouter = require('express').Router()
 
-userRouter.post('/', async (request, response, next) => {
+userRouter.post('/', async (request, response) => {
     const body = request.body
 
-    if (body.password.length === 0) {
-        return response.status(400).json({ error: 'password missing' })
-    } else
-        if (body.password.length < 3) {
-            return response.status(400).json({ error: 'password too short' })
-        }
+    if (body.password.length === 0 || body.password.length < 3) {
+        return response.status(400).json({ error: 'password too short' })
+    }
 
     const saltRounds = 10
     const passwordHash = await bcrypt.hash(body.password, saltRounds)
@@ -21,12 +18,8 @@ userRouter.post('/', async (request, response, next) => {
         passwordHash
     })
 
-    try {
-        const savedUser = await user.save()
-        response.json(savedUser)
-    } catch (exception) {
-        next(exception)
-    }
+    const savedUser = await user.save()
+    response.json(savedUser)
 })
 
 userRouter.get('/', async (request, response) => {
@@ -34,16 +27,12 @@ userRouter.get('/', async (request, response) => {
     response.json(users.map(u => u.toJSON()))
 })
 
-userRouter.delete('/:id', async (request, response, next) => {
-    try {
-        await User.findByIdAndRemove(request.params.id)
-        response.status(204).end()
-    } catch (exception) {
-        next(exception)
-    }
+userRouter.delete('/:id', async (request, response) => {
+    await User.findByIdAndRemove(request.params.id)
+    response.status(204).end()
 })
 
-userRouter.put('/:id', async (request, response, next) => {
+userRouter.put('/:id', async (request, response) => {
     const body = request.body
 
     const user = {
@@ -51,12 +40,8 @@ userRouter.put('/:id', async (request, response, next) => {
         name: body.name,
     }
 
-    try {
-        const updatedUser = await User.findByIdAndUpdate(request.params.id, user, { new: true })
-        response.json(updatedUser)
-    } catch (exception) {
-        next(exception)
-    }
+    const updatedUser = await User.findByIdAndUpdate(request.params.id, user, { new: true })
+    response.json(updatedUser)
 })
 
 module.exports = userRouter
