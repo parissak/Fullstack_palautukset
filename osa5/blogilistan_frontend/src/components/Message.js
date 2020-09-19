@@ -1,14 +1,13 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 const Message = ({ message }) => {
     if (!message) {
         return null
     }
 
-    console.log(message.type)
-
-    const succesfull = {color:'green', fontSize:20}
-    const unsuccesfull = {color:'red', fontSize:20}
+    const succesfull = { color: 'green', fontSize: 20 }
+    const unsuccesfull = { color: 'red', fontSize: 20 }
     const messageStyle = message.type === 'error' ? unsuccesfull : succesfull
 
     return (
@@ -16,6 +15,10 @@ const Message = ({ message }) => {
             <p> {message.message} </p>
         </div>
     )
+}
+
+Message.propTypes = {
+    message: PropTypes.object
 }
 
 export default Message
