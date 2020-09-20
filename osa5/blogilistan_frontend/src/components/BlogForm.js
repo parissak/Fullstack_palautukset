@@ -39,13 +39,13 @@ const BlogForm = ({ addBlog }) => {
             <div style={showWhenVisible}>
                 <form onSubmit={handleBlog}>
                     <h2>create new</h2>
-                    <div> title: <input name="title" type="text" value={title}
+                    <div> title: <input id='title' name="title" type="text" value={title}
                         onChange={({ target }) => setTitle(target.value)} />
                     </div>
-                    <div> author: <input name="author" type="text" value={author}
+                    <div> author: <input id='author' name="author" type="text" value={author}
                         onChange={({ target }) => setAuthor(target.value)} />
                     </div>
-                    <div> url: <input name="url" type="text" value={url}
+                    <div> url: <input id='url' name="url" type="text" value={url}
                         onChange={({ target }) => setUrl(target.value)} />
                     </div>
                     <button type="submit"> create new blog </button>

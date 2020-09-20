@@ -31,7 +31,7 @@ const Blog = ({ blog, updateBlogLike, removeBlog, userId }) => {
 
     return (
         <div style={blogStyle}>
-            <div>
+            <div className='visible'>
                 {blog.title} by {blog.author}
                 <button style={buttonMargin} onClick={toggleVisibility}>
                     <span style={showWhenVisible}> hide </span>
@@ -39,20 +39,19 @@ const Blog = ({ blog, updateBlogLike, removeBlog, userId }) => {
                 </button>
             </div>
 
-            <div style={showWhenVisible}>
+            <div style={showWhenVisible} className='nonVisible'>
                 <div>
                     {blog.url}
                 </div>
                 <div>
-          likes: {blog.likes}
+                    likes: {blog.likes}
                     <button style={buttonMargin} onClick={incrementLike}> like </button>
                 </div>
                 <div>
-          added by: {blog.user.username}
+                    added by: {blog.user.username}
                 </div>
                 {userId === blog.user.id && <button onClick={remove}> remove </button>}
             </div>
-
         </div>
     )
 }
