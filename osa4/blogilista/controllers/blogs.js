@@ -4,27 +4,25 @@ const Blog = require('../models/blog')
 const User = require('../models/user')
 
 blogRouter.get('/', async (request, response) => {
-    const blogs = await Blog.find({}).populate('user', { username: 1, name: 1, id: 1 })
+    const blogs = await Blog.find({}).populate('user', { username: 1, name: 1 })
     response.json(blogs)
 })
 
 blogRouter.post('/', async (request, response) => {
-    const body = request.body
+    const blog = new Blog(request.body)
 
     const decodedToken = jwt.verify(request.token, process.env.SECRET)
-
     if (!request.token || !decodedToken.id) {
         return response.status(401).json({ error: 'token missing or invalid' })
     }
+
     const user = await User.findById(decodedToken.id)
 
-    const blog = new Blog({
-        title: body.title,
-        author: body.author,
-        url: body.url,
-        likes: body.likes || 0,
-        user: user._id
-    })
+    if (!blog.likes) {
+        blog.likes = 0
+    }
+
+    blog.user = user
 
     const savedBlog = await blog.save()
     user.blogs = user.blogs.concat(savedBlog._id)
@@ -46,9 +44,11 @@ blogRouter.delete('/:id', async (request, response) => {
         return response.status(403).json({ error: 'unauthorized access' })
     }
 
-    await Blog.findByIdAndRemove(request.params.id)
+    await blog.remove()
+    const removeObject = user.blogs.find(b => b.id.toString === request.params.toString())
+    user.blogs.splice(removeObject, 1)
+    await user.save()
     response.status(204).end()
-
 })
 
 blogRouter.put('/:id', async (request, response, next) => {
