@@ -6,7 +6,7 @@ import blogService from './services/blogs'
 import loginService from './services/login'
 
 const App = () => {
- const [blogs, setBlogs] = useState([])
+    const [blogs, setBlogs] = useState([])
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [user, setUser] = useState(null)
@@ -59,8 +59,8 @@ const App = () => {
 
     const createBlog = async (blogObject) => {
         try {
-            const blog = await blogService.post(blogObject)
-            setBlogs(blogs.concat(blog))
+            const returnedBlog = await blogService.post(blogObject)
+            setBlogs(blogs.concat(returnedBlog))
             messageWith(`${blogObject.title} added succesfully`)
         } catch (exception) {
             messageWith('required information missing', 'error')
@@ -96,15 +96,15 @@ const App = () => {
 
     const loginForm = () => (
         <form onSubmit={handleLogin}>
-            <div>
+            <div id='loginForm'>
                 <h2>log in to application</h2>
-                <div> username <input name="username" type="text" value={username}
+                <div> username <input id='username' name="username" type="text" value={username}
                     onChange={({ target }) => setUsername(target.value)} />
                 </div>
-                <div> password <input name="password" type="password" value={password}
+                <div> password <input id='password' name="password" type="password" value={password}
                     onChange={({ target }) => setPassword(target.value)} />
                 </div>
-                <button type="submit"> login </button>
+                <button id='login-button' type="submit"> login </button>
             </div>
         </form>
     )

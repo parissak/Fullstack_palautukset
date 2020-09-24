@@ -30,10 +30,10 @@ const Blog = ({ blog, updateBlogLike, removeBlog, userId }) => {
     }
 
     return (
-        <div style={blogStyle}>
+        <div className='blog' style={blogStyle}>
             <div className='visible'>
                 {blog.title} by {blog.author}
-                <button style={buttonMargin} onClick={toggleVisibility}>
+                <button id='showBlogButton' style={buttonMargin} onClick={toggleVisibility}>
                     <span style={showWhenVisible}> hide </span>
                     <span style={hideWhenVisible}> show </span>
                 </button>
@@ -45,12 +45,12 @@ const Blog = ({ blog, updateBlogLike, removeBlog, userId }) => {
                 </div>
                 <div>
                     likes: {blog.likes}
-                    <button style={buttonMargin} onClick={incrementLike}> like </button>
+                    <button id='likeBlogButton' style={buttonMargin} onClick={incrementLike}> like </button>
                 </div>
                 <div>
                     added by: {blog.user.username}
                 </div>
-                {userId === blog.user.id && <button onClick={remove}> remove </button>}
+                {userId === blog.user.id && <button id='removeBlogButton' onClick={remove}> remove </button>}
             </div>
         </div>
     )

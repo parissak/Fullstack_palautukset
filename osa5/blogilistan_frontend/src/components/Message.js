@@ -11,7 +11,7 @@ const Message = ({ message }) => {
     const messageStyle = message.type === 'error' ? unsuccesfull : succesfull
 
     return (
-        <div style={messageStyle}>
+        <div className='message' style={messageStyle}>
             <p> {message.message} </p>
         </div>
     )
