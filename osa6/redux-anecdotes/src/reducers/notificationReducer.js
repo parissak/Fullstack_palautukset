@@ -1,9 +1,10 @@
 const reducer = (state = '', action) => {
   switch (action.type) {
-    case 'ADD_ANECDOTE':
-      return `you added "${action.data}"`
-    case 'VOTE_ANECDOTE':
-      return `you voted "${action.data}"`
+    case 'ADD_MESSAGE':
+      const front = action.data.frontPart
+      const objectContent = action.data.content
+      const stringed = `${front} "${objectContent}"`
+      return stringed
     case 'CLEAR':
       return ''
     default:
@@ -11,17 +12,17 @@ const reducer = (state = '', action) => {
   }
 }
 
-export const addAnecdoteMessage = (message) => {
-  return {
-    type: 'ADD_ANECDOTE',
-    data: message
-  }
-}
-
-export const voteAnecdoteMessage = (name) => {
-  return {
-    type: 'VOTE_ANECDOTE',
-    data: name
+export const setNotification = (frontPart, content, time) => {
+  const seconds = time * 1000
+  return async dispatch => {
+    await dispatch({
+      type: 'ADD_MESSAGE',
+      data: { frontPart: frontPart, content: content }
+    })
+    
+    setTimeout(() => {
+      dispatch( clearMessage())
+    }, seconds)
   }
 }
 
