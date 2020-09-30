@@ -1,3 +1,10 @@
+const timerQueue = []
+
+const clearTimerqueue = () => {
+  let previous = timerQueue.shift()
+  clearTimeout(previous)
+}
+
 const reducer = (state = '', action) => {
   switch (action.type) {
     case 'ADD_MESSAGE':
@@ -14,15 +21,22 @@ const reducer = (state = '', action) => {
 
 export const setNotification = (frontPart, content, time) => {
   const seconds = time * 1000
+
   return async dispatch => {
     await dispatch({
       type: 'ADD_MESSAGE',
       data: { frontPart: frontPart, content: content }
     })
-    
-    setTimeout(() => {
-      dispatch( clearMessage())
+
+    if (timerQueue.length !== 1) {
+      clearTimerqueue()
+    }
+
+    const timer = setTimeout(() => {
+      dispatch(clearMessage())
     }, seconds)
+
+    timerQueue.push(timer)
   }
 }
 
