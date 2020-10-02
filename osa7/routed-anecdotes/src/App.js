@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Switch, Route, Link, useRouteMatch, useHistory } from 'react-router-dom'
-
+import { useField } from './hooks'
 
 const Menu = () => {
   const padding = {
@@ -55,20 +55,32 @@ const Footer = () => (
 )
 
 const CreateNew = (props) => {
-  const [content, setContent] = useState('')
-  const [author, setAuthor] = useState('')
-  const [info, setInfo] = useState('')
+  const content = useField('text')
+  const author = useField('text')
+  const info = useField('text')
+
+  const { clear: clearC, ...contentWOClear } = content
+  const { clear: clearA, ...authorWOClear } = author
+  const { clear: clearI, ...infoWOClear } = info
+
   const history = useHistory()
 
   const handleSubmit = (e) => {
     e.preventDefault()
     props.addNew({
-      content,
-      author,
-      info,
-      votes: 0
+      content: content.value,
+      author: author.value,
+      info: info.value,
+      likes: 0
     })
     history.push('/')
+  }
+
+  const clearInput = (e) => {
+    e.preventDefault()
+    content.clear()
+    author.clear()
+    info.clear()
   }
 
   return (
@@ -77,17 +89,18 @@ const CreateNew = (props) => {
       <form onSubmit={handleSubmit}>
         <div>
           content
-          <input name='content' value={content} onChange={(e) => setContent(e.target.value)} />
+          <input {...contentWOClear} />
         </div>
         <div>
           author
-          <input name='author' value={author} onChange={(e) => setAuthor(e.target.value)} />
+          <input {...authorWOClear} />
         </div>
         <div>
           url for more info
-          <input name='info' value={info} onChange={(e) => setInfo(e.target.value)} />
+          <input {...infoWOClear} />
         </div>
         <button>create</button>
+        <button onClick={clearInput}>reset</button>
       </form>
     </div>
   )
