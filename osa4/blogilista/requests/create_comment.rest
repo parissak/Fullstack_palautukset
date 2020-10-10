@@ -1,0 +1,6 @@
+POST http://localhost:3003/api/blogs/5f6b3b3c2489a914f731467d/comments
+Content-Type: application/json
+
+{ 
+  "content": "MAYBE?"
+}
