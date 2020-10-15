@@ -5,6 +5,8 @@ const Books = ({ show, books }) => {
     return null
   }
 
+  console.log(books)
+
   return (
     <div>
       <h2>books</h2>
