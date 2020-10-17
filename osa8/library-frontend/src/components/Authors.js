@@ -9,7 +9,7 @@ const Authors = ({ show, authors }) => {
     refetchQueries: [{ query: ALL_AUTHORS }]
   })
 
-  if (!show) {
+  if (!show || !authors) {
     return null
   }
 
