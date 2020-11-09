@@ -1,25 +1,15 @@
-import React, { useState } from 'react'
-import { useMutation } from '@apollo/client'
+import React from 'react'
+import { useMutation, useQuery } from '@apollo/client'
 import { ALL_AUTHORS, UPDATE_BIRTHYEAR } from '../queries'
+import Select from 'react-select'
 
-const Authors = ({ show, authors }) => {
-  const [name, setName] = useState(authors[0].name)
-  const [born, setBorn] = useState('')
-  const [updateAuthor] = useMutation(UPDATE_BIRTHYEAR, {
-    refetchQueries: [{ query: ALL_AUTHORS }]
-  })
-
-  if (!show || !authors) {
+const Authors = ({ show }) => {
+  const result = useQuery(ALL_AUTHORS)
+  if (!show || !result.data) {
     return null
   }
 
-  const submit = (event) => {
-    event.preventDefault()
-    const setBornTo = Number(born)
-    updateAuthor({ variables: { name, setBornTo } })
-    setName(authors[0].name)
-    setBorn('')
-  }
+  const authors = result.data.allAuthors
 
   return (
     <div>
@@ -44,28 +34,45 @@ const Authors = ({ show, authors }) => {
           )}
         </tbody>
       </table>
+      <SetBirthyear authors={authors} />
+    </div>
+  )
+}
 
-      <h2>authors</h2>
-      <form onSubmit={submit}>
-        <div>
-          <label>name
-          <select value={name} onChange={({ target }) => setName(target.value)}>
-              {authors.map(a =>
-                <option key={a.name}>
-                  {a.name}
-                </option>)}
-            </select>
-          </label>
-        </div>
-        <div>
-          <label>born
-          <input
-              value={born}
-              onChange={({ target }) => setBorn(target.value)}
-            />
-          </label>
-        </div>
-        <button type='submit'>update author</button>
+
+const SetBirthyear = ({ authors }) => {
+  const [editAuthor] = useMutation(UPDATE_BIRTHYEAR, {
+    refetchQueries: [{ query: ALL_AUTHORS }]
+  })
+
+  if (authors.length === 0) {
+    return null
+  }
+
+  const options = authors.map(a => ({
+    value: a.name,
+    label: a.name
+  }))
+
+  const handleSubmit = (event) => {
+    event.preventDefault()
+    editAuthor({
+      variables: {
+        name: event.target.author.value,
+        setBornTo: Number(event.target.year.value)
+      }
+    })
+    event.target.year.value = ""
+    event.target.author.value = null
+  }
+
+  return (
+    <div>
+      <h2>change birthyear</h2>
+      <form onSubmit={handleSubmit}>
+        <Select options = {options} name='author' />
+        <input name = 'year'></input>
+        <button>update author</button>
       </form>
     </div>
   )

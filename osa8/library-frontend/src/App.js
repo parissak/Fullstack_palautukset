@@ -63,7 +63,6 @@ const App = () => {
     return <div>loading...</div>
   }
 
-
   const logout = () => {
     setToken(null)
     setUser(null)
@@ -90,11 +89,11 @@ const App = () => {
       </div>
 
       <Authors
-        show={page === 'authors'} authors={authors.data.allAuthors}
+        show={page === 'authors'}
       />
 
       <Books
-        show={page === 'books'} allBooks={books.data.allBooks}
+        show={page === 'books'}
       />
 
       <LoginForm setToken={setToken} setPage={setPage}
