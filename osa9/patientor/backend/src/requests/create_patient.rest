@@ -3,7 +3,7 @@ Content-Type: application/json
 
 {
     "name": "www",
-    "dateOfBirth": "1986-66-09",
+    "dateOfBirth": "1986-01-09",
     "ssn": "090786-122X",
     "gender": "male",
     "occupation": "New york city cop"

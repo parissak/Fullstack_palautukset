@@ -11,6 +11,7 @@ const toNewPatientEntry = (object: any): NewPatientEntry => {
         ssn: parseSSN(object.ssn),
         gender: parseGender(object.gender),
         occupation: parseOccupation(object.occupation),
+        entries: []
     };
 
     return newEntry;
@@ -30,7 +31,7 @@ const parseDate = (date: any): string => {
     return date;
 };
 
-const parseGender = (gender: any): string => {
+const parseGender = (gender: any): Gender => {
     if (!gender || !isGender(gender)) {
         throw new Error('Incorrect or missing gender: ' + String(gender));
     }
