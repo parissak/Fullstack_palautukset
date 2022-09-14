@@ -7,8 +7,8 @@ import Text from './Text';
 const styles = StyleSheet.create({
 	container: {
 		paddingTop: Constants.statusBarHeight,
-		backgroundColor: theme.colors.background,
-		padding: 20
+		backgroundColor: theme.colors.black,
+		padding: 20,
 	}
 });
 
