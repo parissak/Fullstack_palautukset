@@ -1,7 +1,9 @@
+import { StyleSheet, View } from 'react-native';
+import { Route, Routes, Navigate } from 'react-router-native';
+
 import AppBar from './AppBar'
 import RepositoryList from './RepositoryList';
-import { StyleSheet, View } from 'react-native';
-
+import SignIn from './SignIn'
 import Text from './Text';
 
 const styles = StyleSheet.create({
@@ -16,7 +18,11 @@ const Main = () => {
 		<View style={styles.container}>
 			<AppBar />
 			<Text fontWeight="bold" fontSize="subheading">Rate Repository Application</Text>
-			<RepositoryList />
+			<Routes>        
+				<Route path="/" element={<RepositoryList />} exact />
+				<Route path="/sign" element={<SignIn />} exact />     
+				<Route path="*" element={<Navigate to="/" replace />} />      
+			</Routes>
 		</View>
 	);
 };
