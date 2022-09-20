@@ -8,13 +8,22 @@ const styles = StyleSheet.create({
 		borderWidth: 2,
 		marginBottom: 10,
 		padding: 5,
+		borderColor: theme.colors.grey
+	},
+	error: {
+		borderColor: theme.colors.error,
 	}
 });
 
 const TextInput = ({ style, error, ...props }) => {
+	const textInputStyle = [
+		styles.inputField,
+		error && styles.error,
+		style,
+	];
 
 	return (
-		<View style={[styles.inputField, {borderColor: error ? theme.colors.error : theme.colors.grey}]}>
+		<View style={textInputStyle}>
 			<NativeTextInput {...props} />
 		</View>
 	)
