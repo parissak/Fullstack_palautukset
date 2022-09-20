@@ -25,6 +25,7 @@ const RepositoryList = () => {
 		<FlatList
 			data={repositoryNodes}
 			ItemSeparatorComponent={ItemSeparator}
+			keyExtractor={(item) => item.fullName}
 			renderItem={({item}) => (<RepositoryItem item = {item} />)}
 		/>
 	);
