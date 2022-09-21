@@ -1,7 +1,8 @@
 import * as yup from 'yup';
 
-import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { Formik } from 'formik';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { useNavigate  } from 'react-router-native';
 
 import FormikTextInput from './FormikTextInput';
 import theme from '../theme';
@@ -33,14 +34,14 @@ const validationSchema = yup.object().shape({
 
 const SignIn = () => {
 	const [signIn] = useSignIn();
+	let navigate = useNavigate();
 
 	const onSubmit = async (values) => {
 		const { username, password } = values;
 
 		try {
-			const data = await signIn({ username, password });
-			console.log("data", data.data);
-			console.log("token", data.data.authenticate.accessToken);
+			await signIn({ username, password });	
+			navigate("/");	
 		} catch (e) {
 			console.log("error", e);
 		}
