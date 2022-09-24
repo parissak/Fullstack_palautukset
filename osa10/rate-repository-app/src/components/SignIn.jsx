@@ -48,26 +48,28 @@ const SignIn = () => {
 	};
 	
 	return (
-		<Formik 
-			initialValues={initialValues} 
-			onSubmit={onSubmit}
-			validationSchema={validationSchema}
-		>
-			{({ handleSubmit }) => <SignInForm onSubmit={handleSubmit} />}
-		</Formik>
+		<SignInForm onSubmit={onSubmit}/>	
 	);
 };
 
 const SignInForm = ({ onSubmit }) => {
 	return (
-		<View style={{margin: 15, flex: 1}}>
-			<FormikTextInput name="username" placeholder="Username" />  
-			<FormikTextInput secureTextEntry={true} name="password" placeholder="Password" />          
-			<Pressable style={styles.buttonField} onPress={onSubmit}>
-				<Text style={{color: theme.colors.textSecondary}}>Sign In</Text>
-			</Pressable>
-		</View>
+		<Formik 
+			initialValues={initialValues} 
+			onSubmit={onSubmit}
+			validationSchema={validationSchema}
+		>
+			{({ handleSubmit }) => (
+				<View style={{margin: 15, flex: 1}}>
+					<FormikTextInput name="username" placeholder="Username" />  
+					<FormikTextInput secureTextEntry={true} name="password" placeholder="Password" />          
+					<Pressable style={styles.buttonField} onPress={handleSubmit}>
+						<Text style={{color: theme.colors.textSecondary}}>Sign In</Text>
+					</Pressable>
+				</View>
+			)}
+		</Formik>
 	);
 };
 
-export default SignIn;
+export { SignIn, SignInForm };
