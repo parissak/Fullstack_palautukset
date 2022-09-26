@@ -3,6 +3,7 @@ import { Route, Routes, Navigate } from 'react-router-native';
 
 import AppBar from './AppBar'
 import RepositoryList from './RepositoryList';
+import RepositoryItemWithURL from './RepositoryItemWithURL';
 import {SignIn} from './SignIn'
 import Text from './Text';
 
@@ -21,10 +22,13 @@ const Main = () => {
 			<Routes>        
 				<Route path="/" element={<RepositoryList />} exact />
 				<Route path="/sign" element={<SignIn />} exact />     
+				<Route path="/:repositoryId" element={<RepositoryItemWithURL item={undefined} showUrl={true} />} exact /> 
 				<Route path="*" element={<Navigate to="/" replace />} />      
 			</Routes>
 		</View>
 	);
 };
+
+
 
 export default Main;

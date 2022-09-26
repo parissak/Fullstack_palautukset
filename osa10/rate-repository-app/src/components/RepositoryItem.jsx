@@ -1,4 +1,4 @@
-import { Image, StyleSheet, View } from 'react-native';
+import { Image, Linking, Pressable, StyleSheet, View } from 'react-native';
 import theme from '../theme';
 
 import Text from './Text';
@@ -6,47 +6,58 @@ import Text from './Text';
 const styles = StyleSheet.create({
 	upperContainer: {
 		display: 'flex',
-		flexDirection: 'row',
+		flexDirection: 'row'
 	},
 	logo: {
 		width: 50,
 		height: 50,
-		margin: 15,
 		borderRadius: 50 / 10
 	},
 	descriptionContainer: {
 		display: 'flex',
 		flexDirection: 'column',
-		margin: 15,
+		marginLeft: 15,
+		marginBottom: 15,
 		alignItems: 'flex-start',
 		justifyContent: 'center',
-		flexShrink: 1,
+		flexShrink: 1
 	},
 	statsContainer: {
 		display: 'flex',
 		flexDirection: 'row',
 		justifyContent: 'space-around',
-		marginLeft: 15,
+		marginBottom: 15
 	},
 	tag: {
 		borderRadius: 5,
 		backgroundColor: theme.colors.blue, 
 		color: theme.colors.textSecondary,
-		padding: 4,
+		padding: 4
 	},
 	columnContainer: {
 		display: 'flex',
-		flexDirection: 'column',
-	}
+		flexDirection: 'column'
+	},
+	buttonField: {
+		alignItems: 'center',
+		backgroundColor: theme.colors.blue,
+		borderRadius: 5,
+		justifyContent: 'center',
+		padding: 15
+	},
 });
 
-const RepositoryItem = ({ item }) => {
+const RepositoryItem = ({ item, showUrl }) => {
 	const roundNumber = (number) => {
 		return number >= 1000 ? (number/1000).toFixed(1) + 'k' : number
 	}
 
+	const openURL = (url) => {
+		Linking.openURL(url)
+	}
+
 	return (
-		<View testID="repositoryItem" style={{paddingBottom: 15}}>
+		<View testID="repositoryItem" style={{margin: 15}}>
 			<View style={styles.upperContainer}> 
 				<Image style={styles.logo} source={{ uri: item.ownerAvatarUrl }}></Image>
 				<View style={styles.descriptionContainer}> 
@@ -73,7 +84,13 @@ const RepositoryItem = ({ item }) => {
 					<Text style={{textAlign: 'center'}}>Rating</Text>
 				</View>
 			</View>
+			{showUrl &&
+				<Pressable style={styles.buttonField} onPress={() => openURL(item.url)}>
+					<Text style={{color: theme.colors.textSecondary}}>Open in Github </Text>
+				</Pressable>
+			}
 		</View>
+ 
 	)
 };
 
