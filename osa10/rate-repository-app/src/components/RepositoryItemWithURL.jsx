@@ -7,11 +7,11 @@ import useRepository from '../hooks/useRepository';
 const RepositoryItemWithURL = () => {
 	let { repositoryId } = useParams();
 	const { data, loading } = useRepository(repositoryId);
-  
+ 
 	return (
 		<View>
 			{loading && <View><Text>Loading</Text></View>}
-			{!loading && <RepositoryItem item={data.repository} showUrl={true} />}
+			{!loading && <RepositoryItem item={data.repository} showSingleRepo={true} />}
 		</View>
 	)
 }

@@ -1,9 +1,20 @@
 import { Image, Linking, Pressable, StyleSheet, View } from 'react-native';
+import { FlatList } from 'react-native-web';
 import theme from '../theme';
 
 import Text from './Text';
 
 const styles = StyleSheet.create({
+	circle: {
+		borderColor: theme.colors.blue,
+		borderRadius: 50/2,
+		borderStyle: 'solid',
+		borderWidth: 2,
+		height: 50,
+		justifyContent: 'center',
+		textAlign: 'center',
+		width: 50,
+	},
 	upperContainer: {
 		display: 'flex',
 		flexDirection: 'row'
@@ -20,7 +31,7 @@ const styles = StyleSheet.create({
 		marginBottom: 15,
 		alignItems: 'flex-start',
 		justifyContent: 'center',
-		flexShrink: 1
+		flexShrink: 1,
 	},
 	statsContainer: {
 		display: 'flex',
@@ -47,13 +58,9 @@ const styles = StyleSheet.create({
 	},
 });
 
-const RepositoryItem = ({ item, showUrl }) => {
+const RepositoryItem = ({ item, showSingleRepo }) => {
 	const roundNumber = (number) => {
 		return number >= 1000 ? (number/1000).toFixed(1) + 'k' : number
-	}
-
-	const openURL = (url) => {
-		Linking.openURL(url)
 	}
 
 	return (
@@ -84,14 +91,54 @@ const RepositoryItem = ({ item, showUrl }) => {
 					<Text style={{textAlign: 'center'}}>Rating</Text>
 				</View>
 			</View>
-			{showUrl &&
+			{showSingleRepo && <SingleRepository item={item} />}
+		</View>
+	)
+};
+
+const ItemSeparator = () => <View style={{height: 10, backgroundColor: theme.colors.grey}} />;
+
+const SingleRepository = ({item}) => {
+	const reviewNodes = item.reviews.edges.map(edge => edge.node)
+
+	const openURL = (url) => {
+		Linking.openURL(url)
+	}
+
+	return (
+		<View>
+			<View style={{marginBottom: 15}}>
 				<Pressable style={styles.buttonField} onPress={() => openURL(item.url)}>
 					<Text style={{color: theme.colors.textSecondary}}>Open in Github </Text>
 				</Pressable>
-			}
+			</View>
+			<FlatList 
+				data={reviewNodes} 
+				renderItem={({ item }) => <ReviewItem review={item} />}
+				ItemSeparatorComponent={ItemSeparator}
+			/>
 		</View>
- 
 	)
-};
+}
+
+const ReviewItem = ({review}) => {
+	const splittedDateString = review.createdAt.split(/[-T]/)
+	const dateString = splittedDateString[2] + "." + splittedDateString[1] + "." + splittedDateString[0]
+
+	return(
+		<View style={{marginTop: 15}}>
+			<View style={styles.upperContainer}> 
+				<View style={styles.circle}>
+					<Text fontWeight='bold' style={{color: theme.colors.blue}}>{review.rating}</Text>
+				</View>
+				<View style={styles.descriptionContainer}>
+					<Text fontWeight='bold' style={{paddingBottom: 7.5}}>{review.user.username}</Text>
+					<Text style={{paddingBottom: 7.5}}>{dateString}</Text>
+					<Text>{review.text}</Text>
+				</View>
+			</View>
+		</View>
+	)
+}
 
 export default RepositoryItem;

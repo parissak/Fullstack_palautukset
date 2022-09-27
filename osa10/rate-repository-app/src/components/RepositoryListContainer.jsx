@@ -33,7 +33,7 @@ const RepositoryListContainer = ({repositories}) => {
 			keyExtractor={(item) => item.fullName}
 			renderItem={({item}) => (
 				<Pressable style={{marginRight: 20}} onPress={() => showSingleItem(item)}>
-					<RepositoryItem item={item} showUrl={false} />
+					<RepositoryItem item={item} showSingleRepo={false} />
 				</Pressable>)}
 		/>
 	);
