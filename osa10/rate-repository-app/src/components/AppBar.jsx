@@ -24,7 +24,6 @@ const styles = StyleSheet.create({
 
 const AppBar = () => {
 	const user = useLoggedUser();
-	let navigate = useNavigate();
 	const authStorage = useAuthStorage();
 	const apolloClient = useApolloClient();
 
@@ -59,9 +58,15 @@ const AppBar = () => {
 				</Pressable>} 
 
 				{!user &&
-				<Link to="/sign">
+				<Link to="/signIn">
 					<Text color="textSecondary">Sign in</Text>
 				</Link>}
+				
+				{!user &&
+				<Link to="/signUp">
+					<Text color="textSecondary">Sign up</Text>
+				</Link>}
+
 			</ScrollView>		
 		</View>	
 	)
