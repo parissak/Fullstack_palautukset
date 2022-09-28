@@ -68,3 +68,18 @@ export const GET_REPOSITORY_BY_ID = gql`
 	${REPOSITORY_DETAILS}
 `;
 
+export const CREATE_REVIEW = gql`
+	mutation Mutation ($repositoryName: String!, $ownerName: String!, $rating: Int!, $text: String!) {
+		createReview (review: {repositoryName: $repositoryName, ownerName:$ownerName, rating: $rating, text:$text}) {
+			text
+			createdAt
+			rating
+			repository {
+				name
+				ownerName
+			}
+			id
+			repositoryId
+		}
+	}
+`;
