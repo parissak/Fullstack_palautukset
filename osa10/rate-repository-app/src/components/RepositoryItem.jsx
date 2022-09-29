@@ -1,5 +1,4 @@
-import { Image, Linking, Pressable, StyleSheet, View } from 'react-native';
-import { FlatList } from 'react-native-web';
+import { FlatList, Image, Linking, Pressable, StyleSheet, View } from 'react-native';
 import theme from '../theme';
 
 import Text from './Text';
