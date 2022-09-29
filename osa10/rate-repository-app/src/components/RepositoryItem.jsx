@@ -11,7 +11,6 @@ const styles = StyleSheet.create({
 		borderWidth: 2,
 		height: 50,
 		justifyContent: 'center',
-		textAlign: 'center',
 		width: 50,
 	},
 	upperContainer: {
@@ -128,7 +127,7 @@ const ReviewItem = ({review}) => {
 		<View style={{marginTop: 15}}>
 			<View style={styles.upperContainer}> 
 				<View style={styles.circle}>
-					<Text fontWeight='bold' style={{color: theme.colors.blue}}>{review.rating}</Text>
+					<Text fontWeight='bold' style={{color: theme.colors.blue, textAlign: 'center'}}>{review.rating}</Text>
 				</View>
 				<View style={styles.descriptionContainer}>
 					<Text fontWeight='bold' style={{paddingBottom: 7.5}}>{review.user.username}</Text>
