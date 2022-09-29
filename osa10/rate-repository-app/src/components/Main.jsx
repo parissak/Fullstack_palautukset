@@ -7,7 +7,6 @@ import RepositoryItemWithURL from './RepositoryItemWithURL';
 import Review from './Review';
 import {SignIn} from './SignIn'
 import SignUp from './SignUp';
-import Text from './Text';
 
 
 const styles = StyleSheet.create({
@@ -21,7 +20,6 @@ const Main = () => {
 	return (
 		<View style={styles.container}>
 			<AppBar />
-			<Text fontWeight="bold" fontSize="subheading">Rate Repository Application</Text>
 			<Routes>        
 				<Route path="/" element={<RepositoryList />} exact />
 				<Route path="/review" element={<Review />} exact />     

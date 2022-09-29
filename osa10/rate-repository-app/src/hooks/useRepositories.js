@@ -1,11 +1,33 @@
 import { useState, useEffect } from 'react';
+import { useQuery } from '@apollo/client';
 
 import { GET_REPOSITORIES } from '../graphql/queries';
 
-import { useQuery } from '@apollo/client';
+const useRepositories = (selectedSorting) => {
+	let sortingMethod, orderDirection = ""
+	switch(selectedSorting) {
+	case('latest'):
+		sortingMethod = 'CREATED_AT';
+		orderDirection = 'DESC'
+		break;
+	case('highest'):
+		sortingMethod = 'RATING_AVERAGE'
+		orderDirection = 'DESC'
+		break;
+	case('lowest'):
+		sortingMethod = 'RATING_AVERAGE'
+		orderDirection = 'ASC'
+		break;
+	default:
+		sortingMethod = 'CREATED_AT';
+		orderDirection = 'DESC'
+	}
 
-const useRepositories = () => {
-	const { data, error, loading } = useQuery(GET_REPOSITORIES, {fetchPolicy: 'cache-and-network'})
+	const { data, error, loading } = useQuery(GET_REPOSITORIES, {
+		variables: {'orderBy' : sortingMethod, 'orderDirection' : orderDirection}, 
+		fetchPolicy: 'cache-and-network'
+	})
+	
 	const [repositories, setRepositories] = useState();
 
 	const fetchRepositories = async () => {
