@@ -3,8 +3,7 @@ import theme from '../theme';
  
 import { useNavigate  } from 'react-router-native';
 
-
-import { FlatList, StyleSheet, Pressable, View } from 'react-native';
+import { FlatList, Pressable, StyleSheet, View } from 'react-native';
 
 const styles = StyleSheet.create({
 	separator: {
@@ -38,5 +37,6 @@ const RepositoryListContainer = ({repositories}) => {
 		/>
 	);
 }
+
 
 export default RepositoryListContainer;

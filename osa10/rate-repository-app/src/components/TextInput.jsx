@@ -4,6 +4,7 @@ import theme from '../theme';
 
 const styles = StyleSheet.create({
 	inputField: {
+		backgroundColor: 'white',
 		borderRadius: 5,
 		borderWidth: 2,
 		marginBottom: 10,
