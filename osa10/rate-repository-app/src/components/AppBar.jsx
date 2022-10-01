@@ -42,18 +42,14 @@ const AppBar = () => {
 	return (
 		<View style={styles.container}>
 			<ScrollView horizontal contentContainerStyle={styles.contentContainer}>
-				<Pressable>
-					<Link to="/">
-						<Text color="textSecondary">Repositories</Text>
-					</Link>
-				</Pressable>
+				<Link to="/">
+					<Text color="textSecondary">Repositories</Text>
+				</Link>
 
 				{user &&
-				<Pressable>
-					<Link to="/review">
-						<Text color="textSecondary">Create a review</Text>
-					</Link>
-				</Pressable>} 
+				<Link to="/review">
+					<Text color="textSecondary">Create a review</Text>
+				</Link>} 
 
 				{user &&
 				<Link to="/myreviews">
