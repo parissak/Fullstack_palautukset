@@ -15,12 +15,18 @@ const REPOSITORY_DETAILS = gql`
 `;
 
 export const GET_REPOSITORIES = gql`
-	query ($orderBy: AllRepositoriesOrderBy, $orderDirection: OrderDirection, $searchKeyword: String) {
-		repositories(orderBy: $orderBy, orderDirection: $orderDirection, searchKeyword: $searchKeyword) {
+	query ($orderBy: AllRepositoriesOrderBy, $orderDirection: OrderDirection, $searchKeyword: String, $after: String, $first: Int) {
+		repositories(orderBy: $orderBy, orderDirection: $orderDirection, searchKeyword: $searchKeyword, after: $after, first: $first) {
 			edges {
 				node {
 					...RepositoryDetails
 				}
+				cursor
+			}
+			pageInfo {
+				endCursor
+				startCursor
+				hasNextPage
 			}
 		}
 	}
@@ -45,11 +51,11 @@ export const GET_CURRENT_USER = gql`
 `;
 
 export const GET_REPOSITORY_BY_ID = gql`
-	query ($repositoryId: ID!) {
+	query ($repositoryId: ID!, $after: String, $first: Int) {
 		repository(id: $repositoryId) {
 			...RepositoryDetails
 			url
-			reviews {
+			reviews (after: $after, first: $first) {
 				edges {
 				  	node {
 						id
@@ -61,6 +67,12 @@ export const GET_REPOSITORY_BY_ID = gql`
 					  		username
 						}
 				 	}
+					cursor
+				}
+				pageInfo {
+					endCursor
+					startCursor
+					hasNextPage
 				}
 			}
 		}
@@ -83,7 +95,6 @@ export const CREATE_REVIEW = gql`
 		}
 	}
 `;
-
 
 export const CREATE_USER = gql`
 	mutation Mutation  ($username: String!, $password: String!)  {

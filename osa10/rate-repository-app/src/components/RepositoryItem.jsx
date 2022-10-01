@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
 	},
 });
 
-const RepositoryItem = ({ item, showSingleRepo }) => {
+const RepositoryItem = ({ item, showSingleRepo, onEndReach }) => {
 	const roundNumber = (number) => {
 		return number >= 1000 ? (number/1000).toFixed(1) + 'k' : number
 	}
@@ -89,14 +89,14 @@ const RepositoryItem = ({ item, showSingleRepo }) => {
 					<Text style={{textAlign: 'center'}}>Rating</Text>
 				</View>
 			</View>
-			{showSingleRepo && <SingleRepository item={item} />}
+			{showSingleRepo && <SingleRepository item={item} onEndReach={onEndReach}/>}
 		</View>
 	)
 };
 
 const ItemSeparator = () => <View style={{height: 10, backgroundColor: theme.colors.grey}} />;
 
-const SingleRepository = ({item}) => {
+const SingleRepository = ({item, onEndReach}) => {
 	const reviewNodes = item.reviews.edges.map(edge => edge.node)
 
 	const openURL = (url) => {
@@ -112,8 +112,10 @@ const SingleRepository = ({item}) => {
 			</View>
 			<FlatList 
 				data={reviewNodes} 
-				renderItem={({ item }) => <ReviewItem review={item} />}
 				ItemSeparatorComponent={ItemSeparator}
+				renderItem={({ item }) => <ReviewItem review={item} />}
+				onEndReached={onEndReach}
+				onEndReachedThreshold={0.5}
 			/>
 		</View>
 	)

@@ -5,13 +5,17 @@ import RepositoryItem from './RepositoryItem';
 import useRepository from '../hooks/useRepository';
 
 const RepositoryItemWithURL = () => {
-	let { repositoryId } = useParams();
-	const { data, loading } = useRepository(repositoryId);
+	const { repositoryId, } = useParams();
+	const { data, fetchMore, loading } = useRepository({repositoryId, first: 2});
  
+	const onEndReach = () => {
+		fetchMore();
+	};
+
 	return (
 		<View>
 			{loading && <View><Text>Loading</Text></View>}
-			{!loading && <RepositoryItem item={data.repository} showSingleRepo={true} />}
+			{!loading && <RepositoryItem item={data.repository} showSingleRepo={true} onEndReach={onEndReach}/>}
 		</View>
 	)
 }

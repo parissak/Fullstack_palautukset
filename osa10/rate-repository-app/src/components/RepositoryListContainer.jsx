@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
 
 const ItemSeparator = () => <View style={styles.separator} />;
 
-const RepositoryListContainer = ({repositories}) => {
+const RepositoryListContainer = ({repositories, onEndReach}) => {
 	let navigate = useNavigate();
 
 	const repositoryNodes = repositories
@@ -29,7 +29,9 @@ const RepositoryListContainer = ({repositories}) => {
 		<FlatList
 			data={repositoryNodes}
 			ItemSeparatorComponent={ItemSeparator}
-			keyExtractor={(item) => item.fullName}
+			keyExtractor={(item) => item.id}
+			onEndReached={onEndReach}
+			onEndReachedThreshold={0.5}
 			renderItem={({item}) => (
 				<Pressable style={{marginRight: 20}} onPress={() => showSingleItem(item)}>
 					<RepositoryItem item={item} showSingleRepo={false} />

@@ -1,25 +1,33 @@
 import {Picker} from '@react-native-picker/picker';
 import React, {useState} from "react";
 import { useDebounce } from 'use-debounce';
-import { View } from 'react-native';
+import { Text, View } from 'react-native';
 
 import RepositoryListContainer from './RepositoryListContainer';
 import TextInput from './TextInput';
 import theme from '../theme';
 import useRepositories from '../hooks/useRepositories';
 
-
 const RepositoryList = () => {
 	const [selectedSorting, setSelectedSorting] = useState();
 	const [text, onChangeText] = useState("");
 	const [searchKeyword] = useDebounce(text, 500);
 	
-	const { repositories } = useRepositories(selectedSorting, searchKeyword);
- 
+	const { repositories, fetchMore, loading } = useRepositories({selectedSorting, searchKeyword, first: 2});
+
+	const onEndReach = () => {
+		fetchMore();
+	};
+
 	return (
 		<>
-			<FilterContainer selectedSorting={selectedSorting} setSelectedSorting={setSelectedSorting} onChangeText={onChangeText} text={text}/>
-			<RepositoryListContainer repositories={repositories} /> 
+			{loading && <View><Text>Loading</Text></View>}
+			{!loading && 
+				<View>
+					<FilterContainer selectedSorting={selectedSorting} setSelectedSorting={setSelectedSorting} onChangeText={onChangeText} text={text}/>
+					<RepositoryListContainer onEndReach={onEndReach} repositories={repositories} /> 
+				</View>
+			}
 		</>
 	);
 };
@@ -44,7 +52,6 @@ const SearcBar = ({onChangeText, text}) => {
 	)
 }
 	
-
 const RepositorySorter = ({selectedSorting, setSelectedSorting}) => {
 	return(
 		<Picker
