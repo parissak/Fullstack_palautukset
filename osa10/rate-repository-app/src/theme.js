@@ -7,7 +7,8 @@ const theme = {
 		blue: '#0366d6',
 		black: '#24292e',
 		grey: '#e1e4e8',
-		error: '#d73a4a'
+		error: '#d73a4a',
+		red: '#dc143c'
 	},
 	fontSizes: {	
 		body: 14,

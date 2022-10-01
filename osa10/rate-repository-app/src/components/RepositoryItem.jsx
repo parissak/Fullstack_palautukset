@@ -1,5 +1,6 @@
 import { FlatList, Image, Linking, Pressable, StyleSheet, View } from 'react-native';
 
+import Button from './Button';
 import ReviewItem from './ReviewItem';
 import Text from './Text';
 import theme from '../theme';
@@ -108,9 +109,7 @@ const SingleRepository = ({item, onEndReach}) => {
 	return (
 		<View>
 			<View style={{marginBottom: 15}}>
-				<Pressable style={styles.buttonField} onPress={() => openURL(item.url)}>
-					<Text style={{color: theme.colors.textSecondary}}>Open in Github </Text>
-				</Pressable>
+				<Button text={'Open in Github'} onPress={() => openURL(item.url)} />
 			</View>
 			<FlatList 
 				data={reviewNodes} 

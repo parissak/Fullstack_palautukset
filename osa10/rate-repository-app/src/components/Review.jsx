@@ -4,6 +4,7 @@ import { Formik } from 'formik';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useNavigate  } from 'react-router-native';
 
+import Button from './Button';
 import FormikTextInput from './FormikTextInput';
 import theme from '../theme';
 import useReview from '../hooks/useReview';
@@ -74,9 +75,7 @@ const ReviewForm = ({onSubmit}) => {
 					<FormikTextInput name="repositoryName" placeholder="Repository name" /> 
 					<FormikTextInput name="rating" placeholder="Rating between 0 and 100" />  
 					<FormikTextInput name="text" placeholder="Review" />             
-					<Pressable style={styles.buttonField} onPress={handleSubmit}>
-						<Text style={{color: theme.colors.textSecondary}}>Create a review</Text>
-					</Pressable>
+					<Button text={"Create a review"} onPress={handleSubmit} />
 				</View>
 			)}
 		</Formik>
