@@ -90,6 +90,7 @@ export const GET_CURRENT_USER_REVIEWS = gql`
 						rating
 						createdAt
 						text
+						id
 					}
 				}
 			}
@@ -114,7 +115,7 @@ export const CREATE_REVIEW = gql`
 `;
 
 export const CREATE_USER = gql`
-	mutation Mutation  ($username: String!, $password: String!)  {
+	mutation Mutation ($username: String!, $password: String!)  {
 		createUser  (user: {username: $username,  password: $password}) {
 			username
 			id
@@ -122,3 +123,9 @@ export const CREATE_USER = gql`
 		}
   	}
 `; 
+
+export const DELETE_REVIEW = gql`
+	mutation DeleteReview($deleteReviewId: ID!) {
+		deleteReview(id: $deleteReviewId)
+	}
+`;
