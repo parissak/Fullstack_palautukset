@@ -1,7 +1,9 @@
 import { FlatList, Image, Linking, Pressable, StyleSheet, View } from 'react-native';
+
+import ReviewItem from './ReviewItem';
+import Text from './Text';
 import theme from '../theme';
 
-import Text from './Text';
 
 const styles = StyleSheet.create({
 	circle: {
@@ -23,13 +25,13 @@ const styles = StyleSheet.create({
 		borderRadius: 50 / 10
 	},
 	descriptionContainer: {
+		alignItems: 'flex-start',
 		display: 'flex',
 		flexDirection: 'column',
-		marginLeft: 15,
-		marginBottom: 15,
-		alignItems: 'flex-start',
-		justifyContent: 'center',
 		flexShrink: 1,
+		justifyContent: 'center',
+		marginBottom: 15,
+		marginLeft: 15,
 	},
 	statsContainer: {
 		display: 'flex',
@@ -113,30 +115,10 @@ const SingleRepository = ({item, onEndReach}) => {
 			<FlatList 
 				data={reviewNodes} 
 				ItemSeparatorComponent={ItemSeparator}
-				renderItem={({ item }) => <ReviewItem review={item} />}
+				renderItem={({ item }) => <ReviewItem review={item} showUserReviews={false}/>}
 				onEndReached={onEndReach}
 				onEndReachedThreshold={0.5}
 			/>
-		</View>
-	)
-}
-
-const ReviewItem = ({review}) => {
-	const splittedDateString = review.createdAt.split(/[-T]/)
-	const dateString = splittedDateString[2] + "." + splittedDateString[1] + "." + splittedDateString[0]
-
-	return(
-		<View style={{marginTop: 15}}>
-			<View style={styles.upperContainer}> 
-				<View style={styles.circle}>
-					<Text fontWeight='bold' style={{color: theme.colors.blue, textAlign: 'center'}}>{review.rating}</Text>
-				</View>
-				<View style={styles.descriptionContainer}>
-					<Text fontWeight='bold' style={{paddingBottom: 7.5}}>{review.user.username}</Text>
-					<Text style={{paddingBottom: 7.5}}>{dateString}</Text>
-					<Text>{review.text}</Text>
-				</View>
-			</View>
 		</View>
 	)
 }

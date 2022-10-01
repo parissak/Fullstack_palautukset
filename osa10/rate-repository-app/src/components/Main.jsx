@@ -7,6 +7,7 @@ import RepositoryItemWithURL from './RepositoryItemWithURL';
 import Review from './Review';
 import {SignIn} from './SignIn'
 import SignUp from './SignUp';
+import UserReviews from './UserReviews';
 
 
 const styles = StyleSheet.create({
@@ -22,6 +23,7 @@ const Main = () => {
 			<AppBar />
 			<Routes>        
 				<Route path="/" element={<RepositoryList />} exact />
+				<Route path="/myreviews" element={<UserReviews />} exact />
 				<Route path="/review" element={<Review />} exact />     
 				<Route path="/signIn" element={<SignIn />} exact />    
 				<Route path="/signUp" element={<SignUp />} exact />   

@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-native";
 import { useApolloClient } from '@apollo/client';
 import Constants from 'expo-constants';
 
+
 import theme from '../theme';
 import Text from './Text';
 import useLoggedUser from '../hooks/useLoggedUser';
@@ -26,11 +27,13 @@ const AppBar = () => {
 	const user = useLoggedUser();
 	const authStorage = useAuthStorage();
 	const apolloClient = useApolloClient();
+	let navigate = useNavigate();
 
 	const signOut = async () => {
 		try {
 			await authStorage.removeAccessToken();	
 			apolloClient.resetStore();
+			navigate('/');
 		} catch (e) {
 			console.log(e);
 		}
@@ -51,6 +54,11 @@ const AppBar = () => {
 						<Text color="textSecondary">Create a review</Text>
 					</Link>
 				</Pressable>} 
+
+				{user &&
+				<Link to="/myreviews">
+					<Text color="textSecondary">My reviews</Text>
+				</Link>} 
 				
 				{user &&
 				<Pressable onPress={signOut}>
