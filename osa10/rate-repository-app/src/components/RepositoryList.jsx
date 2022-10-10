@@ -1,7 +1,7 @@
 import {Picker} from '@react-native-picker/picker';
 import React, {useState} from "react";
 import { useDebounce } from 'use-debounce';
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
 import { useNavigate  } from 'react-router-native';
 
 import RepositoryListContainer from './RepositoryListContainer';
@@ -25,14 +25,12 @@ const RepositoryList = () => {
 	}
 
 	return (
-		<>
-			{loading && <View><Text>Loading</Text></View>}
-			{!loading && 
-				<View>
-					<FilterContainer selectedSorting={selectedSorting} setSelectedSorting={setSelectedSorting} onChangeText={onChangeText} text={text}/>
-					<RepositoryListContainer onEndReach={onEndReach} repositories={repositories} showSingleItem={showSingleItem}/> 
-				</View>
-			}
+		<>			
+			<View>
+				<FilterContainer selectedSorting={selectedSorting} setSelectedSorting={setSelectedSorting} onChangeText={onChangeText} text={text}/>
+				{loading && <View></View>} 
+				{!loading && <RepositoryListContainer onEndReach={onEndReach} repositories={repositories} showSingleItem={showSingleItem}/> }
+			</View>
 		</>
 	);
 };
