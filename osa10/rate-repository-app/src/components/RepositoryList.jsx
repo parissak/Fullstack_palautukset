@@ -2,6 +2,7 @@ import {Picker} from '@react-native-picker/picker';
 import React, {useState} from "react";
 import { useDebounce } from 'use-debounce';
 import { Text, View } from 'react-native';
+import { useNavigate  } from 'react-router-native';
 
 import RepositoryListContainer from './RepositoryListContainer';
 import TextInput from './TextInput';
@@ -12,12 +13,16 @@ const RepositoryList = () => {
 	const [selectedSorting, setSelectedSorting] = useState();
 	const [text, onChangeText] = useState("");
 	const [searchKeyword] = useDebounce(text, 500);
-	
 	const { repositories, fetchMore, loading } = useRepositories({selectedSorting, searchKeyword, first: 2});
+	let navigate = useNavigate();
 
 	const onEndReach = () => {
 		fetchMore();
 	};
+
+	const showSingleItem = (item) => {
+		navigate(`/${item.id}`);
+	}
 
 	return (
 		<>
@@ -25,7 +30,7 @@ const RepositoryList = () => {
 			{!loading && 
 				<View>
 					<FilterContainer selectedSorting={selectedSorting} setSelectedSorting={setSelectedSorting} onChangeText={onChangeText} text={text}/>
-					<RepositoryListContainer onEndReach={onEndReach} repositories={repositories} /> 
+					<RepositoryListContainer onEndReach={onEndReach} repositories={repositories} showSingleItem={showSingleItem}/> 
 				</View>
 			}
 		</>
