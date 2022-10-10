@@ -5,11 +5,12 @@ import { DELETE_REVIEW } from '../graphql/queries';
 const useReview = () => {
 	const [mutate, result] = useMutation(DELETE_REVIEW);
 
-	const review =  ({ reviewId }) => {
-		mutate({ variables: {deleteReviewId : reviewId} });
+	const deleteReview = ({ reviewId }) => {
+		const response = mutate({ variables: {deleteReviewId : reviewId} });
+		return response
 	};
   
-	return [review, result];
+	return [deleteReview, result];
 };
 
 export default useReview;
