@@ -1,4 +1,4 @@
-import { FlatList, Image, Linking, Pressable, StyleSheet, View } from 'react-native';
+import { FlatList, Image, Linking, StyleSheet, View } from 'react-native';
 
 import Button from './Button';
 import ReviewItem from './ReviewItem';

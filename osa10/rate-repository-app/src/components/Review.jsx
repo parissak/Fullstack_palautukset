@@ -1,23 +1,13 @@
 import * as yup from 'yup';
 
 import { Formik } from 'formik';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { View } from 'react-native';
 import { useNavigate  } from 'react-router-native';
 
 import Button from './Button';
 import FormikTextInput from './FormikTextInput';
-import theme from '../theme';
 import useReview from '../hooks/useReview';
 
-const styles = StyleSheet.create({
-	buttonField: {
-		alignItems: 'center',
-		backgroundColor: theme.colors.blue,
-		borderRadius: 5,
-		justifyContent: 'center',
-		padding: 7,
-	},
-});
 
 const initialValues = {
 	ownerName: '',
