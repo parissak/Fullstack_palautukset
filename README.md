@@ -1,5 +1,5 @@
 # Fullstack20_palautukset
-This repository contains exercises for [University of Helsinki Full Stack open -course](https://fullstackopen.com).
+This repository contains exercises for [University of Helsinki Full Stack open -course](https://fullstackopen.com) as well as links to exercises for additional modules.
 
 - Part 0: Fundamentals of Web apps.
 - Part 1: Introduction to React.
@@ -13,3 +13,4 @@ This repository contains exercises for [University of Helsinki Full Stack open -
 - Part 9: TypeScript.
 - Part 10: React Native.
 - Part 11: CI/CD. [Exercises](https://github.com/parissak/full-stack-open-pokedex) and [example pipeline](https://github.com/parissak/full-stack-open-part11-example-app).
+- Part 12: Containers. [Exercises](https://github.com/parissak/full-stack-open-part12-containers).
